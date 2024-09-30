@@ -101,34 +101,62 @@
 
   # Install firefox.
   programs.firefox.enable = true;
+   programs.nix-ld.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-	pkgs.vscode
-	pkgs.git
-	pkgs.vesktop
-	pkgs.python3
-	pkgs.python312Packages.pip
-	pkgs.zsh
-	pkgs.ollama
-	pkgs.gnome.gnome-software
-	pkgs.gnome-extension-manager
-  pkgs.wineWowPackages.waylandFull
-	fprintd # for fingerprint
-  	libfprint # for fingerprint
-	pkgs.gnome.gnome-tweaks
-	usbutils # for fingerpring
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ];
-services.fprintd.enable = true;
+environment.systemPackages = with pkgs; [
+  pkgs.vscode
+  pkgs.git
+  pkgs.vesktop
+  pkgs.python3
+  pkgs.python312Packages.pip
+  pkgs.zsh
+  pkgs.ollama
+  pkgs.brave
+  pkgs.obsidian
+  pkgs.gnome.gnome-software
+  pkgs.gnome-extension-manager
+  pkgs.libreoffice-qt-fresh
 
-services.fprintd.tod.enable = true;
-services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix; # (On my device it only worked with this driver)
+  fprintd # for fingerprint
+  libfprint # for fingerprint
+  pkgs.gnome.gnome-tweaks
+  usbutils # for fingerprint
+  pkgs.whatsapp-for-linux
+
+  # python
+  pkgs.jupyter
+  pkgs.python3Packages.numpy
+  pkgs.python312Packages.conda
+
+  # docker
+  pkgs.docker_27
+  pkgs.docker-client
+
+  # java
+  pkgs.jetbrains.idea-ultimate
+];
+
+
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    fuse3
+    icu
+    nss
+    openssl
+    curl
+    expat
+  ];
+  services.fprintd.enable = true;
+
+  # services.fprintd.tod.enable = true;
+  # services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix; # (On my device it only worked with this driver)
+  #---
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
